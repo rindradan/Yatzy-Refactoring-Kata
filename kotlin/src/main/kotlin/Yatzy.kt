@@ -178,42 +178,21 @@ class Yatzy {
         ) 20 else 0
     }
 
-    fun fullHouse(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val tallies: IntArray
-        var _2 = false
-        var i: Int
-        var _2_at = 0
-        var _3 = false
-        var _3_at = 0
-
-        tallies = IntArray(6)
-        tallies[d1 - 1] += 1
-        tallies[d2 - 1] += 1
-        tallies[d3 - 1] += 1
-        tallies[d4 - 1] += 1
-        tallies[d5 - 1] += 1
-
-        i = 0
-        while (i != 6) {
-            if (tallies[i] == 2) {
-                _2 = true
-                _2_at = i + 1
-            }
-            i += 1
-        }
-
-        i = 0
-        while (i != 6) {
-            if (tallies[i] == 3) {
-                _3 = true
-                _3_at = i + 1
-            }
-            i += 1
-        }
-
-        return if (_2 && _3)
-            _2_at * 2 + _3_at * 3
-        else
-            0
+    fun fullHouse(vararg dices: Int): Int {
+        val tallies: IntArray = getTalliesByDice(dices)
+        return if (hasOnePair(tallies) && hasThreeOfAKind(tallies)) {
+            dices.sum()
+        } else 0
     }
+
+    private fun getTalliesByDice(dices: IntArray): IntArray {
+        val tallies = IntArray(6)
+        for (dice in dices) {
+            tallies[dice - 1]++
+        }
+        return tallies
+    }
+
+    private fun hasOnePair(tallies: IntArray): Boolean = tallies.any { it == 2 }
+    private fun hasThreeOfAKind(tallies: IntArray): Boolean = tallies.any { it == 3 }
 }
