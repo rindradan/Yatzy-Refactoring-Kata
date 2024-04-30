@@ -81,21 +81,11 @@ class Yatzy {
         return sum
     }
 
-    fun onePair(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val counts = IntArray(6)
-        counts[d1 - 1]++
-        counts[d2 - 1]++
-        counts[d3 - 1]++
-        counts[d4 - 1]++
-        counts[d5 - 1]++
-        var at: Int
-        at = 0
-        while (at != 6) {
-            if (counts[6 - at - 1] >= 2)
-                return (6 - at) * 2
-            at++
-        }
-        return 0
+    fun onePair(vararg dices: Int): Int {
+        val tallies = getTalliesByDice(dices)
+        return if (hasPairs(tallies)) {
+            (tallies.filter { it.value >= 2 }.keys.max() + 1) * 2
+        } else 0
     }
 
     fun twoPairs(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
@@ -124,14 +114,14 @@ class Yatzy {
     fun threeOfAKind(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
         return if (hasThreeOfAKindOrMore(tallies)) {
-            tallies.getIndex { it >= 3 } * 3
+            (tallies.filter { it.value >= 3 }.keys.max() + 1) * 3
         } else 0
     }
 
     fun fourOfAKind(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
-        return if (hasThreeOfAKindOrMore(tallies)) {
-            tallies.getIndex { it >= 4 } * 4
+        return if (hasFourOfAKindOrMore(tallies)) {
+            (tallies.filter { it.value >= 4 }.keys.max() + 1) * 4
         } else 0
     }
 
@@ -146,26 +136,27 @@ class Yatzy {
     }
 
     fun fullHouse(vararg dices: Int): Int {
-        val tallies: IntArray = getTalliesByDice(dices)
+        val tallies = getTalliesByDice(dices)
         return if (hasOnePair(tallies) && hasThreeOfAKind(tallies)) {
             dices.sum()
         } else 0
     }
 
-    private fun getTalliesByDice(dices: IntArray): IntArray {
-        val tallies = IntArray(6)
+    private fun getTalliesByDice(dices: IntArray): Map<Int,Int> {
+        val tallies = HashMap<Int,Int>(6)
         for (dice in dices) {
-            tallies[dice - 1]++
+            tallies[dice - 1] = (tallies[dice - 1] ?: 0) + 1
         }
         return tallies
     }
 
-    private fun IntArray.getIndex(predicate: (Int) -> Boolean) = indexOfFirst(predicate) + 1
-    private fun hasOnePair(tallies: IntArray): Boolean = tallies.any { it == 2 }
-    private fun hasThreeOfAKind(tallies: IntArray): Boolean = tallies.any { it == 3 }
-    private fun hasThreeOfAKindOrMore(tallies: IntArray): Boolean = tallies.any { it >= 3 }
-    private fun hasSmallStraight(tallies: IntArray): Boolean =
-        tallies.filterIndexed { index, _ -> index in 0..4 }.all { it == 1 }
-    private fun hasLargeStraight(tallies: IntArray): Boolean =
-        tallies.filterIndexed { index, _ -> index in 1..5 }.all { it == 1 }
+    private fun hasOnePair(tallies: Map<Int,Int>): Boolean = tallies.any { it.value == 2 }
+    private fun hasPairs(tallies: Map<Int,Int>): Boolean = tallies.any { it.value >= 2 }
+    private fun hasThreeOfAKind(tallies: Map<Int,Int>): Boolean = tallies.any { it.value == 3 }
+    private fun hasThreeOfAKindOrMore(tallies: Map<Int,Int>): Boolean = tallies.any { it.value >= 3 }
+    private fun hasFourOfAKindOrMore(tallies: Map<Int,Int>): Boolean = tallies.any { it.value >= 4 }
+    private fun hasSmallStraight(tallies: Map<Int,Int>): Boolean =
+        tallies.filterKeys { it in 0..4 }.all { it.value == 1 }
+    private fun hasLargeStraight(tallies: Map<Int,Int>): Boolean =
+        tallies.filterKeys { it in 1..5 }.all { it.value == 1 }
 }
