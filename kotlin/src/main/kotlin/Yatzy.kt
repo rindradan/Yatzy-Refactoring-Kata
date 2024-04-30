@@ -1,4 +1,3 @@
-
 class Yatzy {
 
     fun chance(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
@@ -136,19 +135,9 @@ class Yatzy {
         } else 0
     }
 
-    fun smallStraight(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val tallies: IntArray = IntArray(6)
-        tallies[d1 - 1] += 1
-        tallies[d2 - 1] += 1
-        tallies[d3 - 1] += 1
-        tallies[d4 - 1] += 1
-        tallies[d5 - 1] += 1
-        return if (tallies[0] == 1 &&
-            tallies[1] == 1 &&
-            tallies[2] == 1 &&
-            tallies[3] == 1 &&
-            tallies[4] == 1
-        ) 15 else 0
+    fun smallStraight(vararg dices: Int): Int {
+        val tallies = getTalliesByDice(dices)
+        return if (hasSmallStraight(tallies)) 15 else 0
     }
 
     fun largeStraight(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
@@ -180,8 +169,11 @@ class Yatzy {
         }
         return tallies
     }
+
     private fun IntArray.getIndex(predicate: (Int) -> Boolean) = indexOfFirst(predicate) + 1
     private fun hasOnePair(tallies: IntArray): Boolean = tallies.any { it == 2 }
     private fun hasThreeOfAKind(tallies: IntArray): Boolean = tallies.any { it == 3 }
     private fun hasThreeOfAKindOrMore(tallies: IntArray): Boolean = tallies.any { it >= 3 }
+    private fun hasSmallStraight(tallies: IntArray): Boolean =
+        tallies.filterIndexed { index, _ -> index in 0..4 }.all { it == 1 }
 }
