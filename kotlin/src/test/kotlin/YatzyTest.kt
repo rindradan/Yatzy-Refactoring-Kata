@@ -5,8 +5,8 @@ class YatzyTest {
 
     @Test
     fun chance_scores_sum_of_all_dice() {
-        assertEquals(15, Yatzy.chance(2, 3, 4, 5, 1))
-        assertEquals(16, Yatzy.chance(3, 3, 4, 5, 1))
+        assertEquals(15, Yatzy().chance(2, 3, 4, 5, 1))
+        assertEquals(16, Yatzy().chance(3, 3, 4, 5, 1))
     }
 
     @Test
@@ -38,23 +38,23 @@ class YatzyTest {
 
     @Test
     fun fours_scores_sum_of_all_four() {
-        assertEquals(12, Yatzy(4, 4, 4, 5, 5).fours())
-        assertEquals(8, Yatzy(4, 4, 5, 5, 5).fours())
-        assertEquals(4, Yatzy(4, 5, 5, 5, 5).fours())
+        assertEquals(12, Yatzy().fours(4, 4, 4, 5, 5))
+        assertEquals(8, Yatzy().fours(4, 4, 5, 5, 5))
+        assertEquals(4, Yatzy().fours(4, 5, 5, 5, 5))
     }
 
     @Test
     fun fives_scores_sum_of_all_five() {
-        assertEquals(10, Yatzy(4, 4, 4, 5, 5).fives())
-        assertEquals(15, Yatzy(4, 4, 5, 5, 5).fives())
-        assertEquals(20, Yatzy(4, 5, 5, 5, 5).fives())
+        assertEquals(10, Yatzy().fives(4, 4, 4, 5, 5))
+        assertEquals(15, Yatzy().fives(4, 4, 5, 5, 5))
+        assertEquals(20, Yatzy().fives(4, 5, 5, 5, 5))
     }
 
     @Test
     fun sixes_scores_sum_of_all_six() {
-        assertEquals(0, Yatzy(4, 4, 4, 5, 5).sixes())
-        assertEquals(6, Yatzy(4, 4, 6, 5, 5).sixes())
-        assertEquals(18, Yatzy(6, 5, 6, 6, 5).sixes())
+        assertEquals(0, Yatzy().sixes(4, 4, 4, 5, 5))
+        assertEquals(6, Yatzy().sixes(4, 4, 6, 5, 5))
+        assertEquals(18, Yatzy().sixes(6, 5, 6, 6, 5))
     }
 
     @Test
