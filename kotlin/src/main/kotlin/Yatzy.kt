@@ -129,17 +129,11 @@ class Yatzy {
         } else 0
     }
 
-    fun fourOfAKind(_1: Int, _2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val tallies: IntArray = IntArray(6)
-        tallies[_1 - 1]++
-        tallies[_2 - 1]++
-        tallies[d3 - 1]++
-        tallies[d4 - 1]++
-        tallies[d5 - 1]++
-        for (i in 0..5)
-            if (tallies[i] >= 4)
-                return (i + 1) * 4
-        return 0
+    fun fourOfAKind(vararg dices: Int): Int {
+        val tallies = getTalliesByDice(dices)
+        return if (hasThreeOfAKindOrMore(tallies)) {
+            tallies.getIndex { it >= 4 } * 4
+        } else 0
     }
 
     fun smallStraight(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
