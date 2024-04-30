@@ -122,17 +122,11 @@ class Yatzy {
             0
     }
 
-    fun threeOfAKind(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val t: IntArray = IntArray(6)
-        t[d1 - 1]++
-        t[d2 - 1]++
-        t[d3 - 1]++
-        t[d4 - 1]++
-        t[d5 - 1]++
-        for (i in 0..5)
-            if (t[i] >= 3)
-                return (i + 1) * 3
-        return 0
+    fun threeOfAKind(vararg dices: Int): Int {
+        val tallies = getTalliesByDice(dices)
+        return if (hasThreeOfAKindOrMore(tallies)) {
+            tallies.getIndex { it >= 3 } * 3
+        } else 0
     }
 
     fun fourOfAKind(_1: Int, _2: Int, d3: Int, d4: Int, d5: Int): Int {
@@ -192,7 +186,8 @@ class Yatzy {
         }
         return tallies
     }
-
+    private fun IntArray.getIndex(predicate: (Int) -> Boolean) = indexOfFirst(predicate) + 1
     private fun hasOnePair(tallies: IntArray): Boolean = tallies.any { it == 2 }
     private fun hasThreeOfAKind(tallies: IntArray): Boolean = tallies.any { it == 3 }
+    private fun hasThreeOfAKindOrMore(tallies: IntArray): Boolean = tallies.any { it >= 3 }
 }
