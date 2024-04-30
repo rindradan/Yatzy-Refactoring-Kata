@@ -84,44 +84,28 @@ class Yatzy {
     fun onePair(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
         return if (hasPairs(tallies)) {
-            (tallies.filter { it.value >= 2 }.keys.max() + 1) * 2
+            tallies.filter { it.value >= 2 }.keys.map { it + 1 }.map { it * 2 }.max()
         } else 0
     }
 
-    fun twoPairs(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val counts = IntArray(6)
-        counts[d1 - 1]++
-        counts[d2 - 1]++
-        counts[d3 - 1]++
-        counts[d4 - 1]++
-        counts[d5 - 1]++
-        var n = 0
-        var score = 0
-        var i = 0
-        while (i < 6) {
-            if (counts[6 - i - 1] >= 2) {
-                n++
-                score += 6 - i
-            }
-            i += 1
-        }
-        return if (n == 2)
-            score * 2
-        else
-            0
+    fun twoPairs(vararg dices: Int): Int {
+        val tallies = getTalliesByDice(dices)
+        return if (hasTwoPairs(tallies)) {
+            tallies.filter { it.value >= 2 }.keys.map { it + 1 }.map { it * 2 }.sum()
+        } else 0
     }
 
     fun threeOfAKind(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
         return if (hasThreeOfAKindOrMore(tallies)) {
-            (tallies.filter { it.value >= 3 }.keys.max() + 1) * 3
+            tallies.filter { it.value >= 3 }.keys.map { it + 1 }.map { it * 3 }.max()
         } else 0
     }
 
     fun fourOfAKind(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
         return if (hasFourOfAKindOrMore(tallies)) {
-            (tallies.filter { it.value >= 4 }.keys.max() + 1) * 4
+            tallies.filter { it.value >= 4 }.keys.map { it + 1 }.map { it * 4 }.max()
         } else 0
     }
 
@@ -152,6 +136,7 @@ class Yatzy {
 
     private fun hasOnePair(tallies: Map<Int,Int>): Boolean = tallies.any { it.value == 2 }
     private fun hasPairs(tallies: Map<Int,Int>): Boolean = tallies.any { it.value >= 2 }
+    private fun hasTwoPairs(tallies: Map<Int,Int>): Boolean = tallies.count { it.value >= 2 } >= 2
     private fun hasThreeOfAKind(tallies: Map<Int,Int>): Boolean = tallies.any { it.value == 3 }
     private fun hasThreeOfAKindOrMore(tallies: Map<Int,Int>): Boolean = tallies.any { it.value >= 3 }
     private fun hasFourOfAKindOrMore(tallies: Map<Int,Int>): Boolean = tallies.any { it.value >= 4 }
