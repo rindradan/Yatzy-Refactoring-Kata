@@ -140,19 +140,9 @@ class Yatzy {
         return if (hasSmallStraight(tallies)) 15 else 0
     }
 
-    fun largeStraight(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        val tallies: IntArray = IntArray(6)
-        tallies[d1 - 1] += 1
-        tallies[d2 - 1] += 1
-        tallies[d3 - 1] += 1
-        tallies[d4 - 1] += 1
-        tallies[d5 - 1] += 1
-        return if (tallies[1] == 1 &&
-            tallies[2] == 1 &&
-            tallies[3] == 1 &&
-            tallies[4] == 1
-            && tallies[5] == 1
-        ) 20 else 0
+    fun largeStraight(vararg dices: Int): Int {
+        val tallies = getTalliesByDice(dices)
+        return if (hasLargeStraight(tallies)) 20 else 0
     }
 
     fun fullHouse(vararg dices: Int): Int {
@@ -176,4 +166,6 @@ class Yatzy {
     private fun hasThreeOfAKindOrMore(tallies: IntArray): Boolean = tallies.any { it >= 3 }
     private fun hasSmallStraight(tallies: IntArray): Boolean =
         tallies.filterIndexed { index, _ -> index in 0..4 }.all { it == 1 }
+    private fun hasLargeStraight(tallies: IntArray): Boolean =
+        tallies.filterIndexed { index, _ -> index in 1..5 }.all { it == 1 }
 }
