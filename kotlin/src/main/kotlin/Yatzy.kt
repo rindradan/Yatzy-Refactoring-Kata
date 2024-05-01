@@ -19,8 +19,6 @@ class Yatzy {
 
     fun sixes(vararg dices: Int): Int = dices.countNumberOccurrence(6)
 
-    private fun IntArray.countNumberOccurrence(number: Int): Int = filter { it == number }.sum()
-
     fun onePair(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
         return tallies.countSameNumber(2)
@@ -41,9 +39,6 @@ class Yatzy {
         return tallies.countSameNumber(4)
     }
 
-    private fun Map<Int, Int>.countSameNumber(number: Int) =
-        filter { it.value >= number }.keys.maxOfOrNull { it * number } ?: 0
-
     fun smallStraight(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
         return if (hasSmallStraight(tallies)) 15 else 0
@@ -58,6 +53,11 @@ class Yatzy {
         val tallies = getTalliesByDice(dices)
         return if (isFullHouse(tallies)) dices.sum() else 0
     }
+
+    private fun IntArray.countNumberOccurrence(number: Int): Int = filter { it == number }.sum()
+
+    private fun Map<Int, Int>.countSameNumber(number: Int) =
+        filter { it.value >= number }.keys.maxOfOrNull { it * number } ?: 0
 
     private fun getTalliesByDice(dices: IntArray): Map<Int, Int> {
         val tallies = HashMap<Int, Int>(6)
