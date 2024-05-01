@@ -20,66 +20,19 @@ class Yatzy {
         return 0
     }
 
-    fun ones(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        var sum = 0
-        if (d1 == 1) sum++
-        if (d2 == 1) sum++
-        if (d3 == 1) sum++
-        if (d4 == 1) sum++
-        if (d5 == 1)
-            sum++
+    fun ones(vararg dices: Int): Int = dices.countNumberOccurrence(1)
 
-        return sum
-    }
+    fun twos(vararg dices: Int): Int = dices.countNumberOccurrence(2)
 
-    fun twos(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        var sum = 0
-        if (d1 == 2) sum += 2
-        if (d2 == 2) sum += 2
-        if (d3 == 2) sum += 2
-        if (d4 == 2) sum += 2
-        if (d5 == 2) sum += 2
-        return sum
-    }
+    fun threes(vararg dices: Int): Int = dices.countNumberOccurrence(3)
 
-    fun threes(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        var s: Int = 0
-        if (d1 == 3) s += 3
-        if (d2 == 3) s += 3
-        if (d3 == 3) s += 3
-        if (d4 == 3) s += 3
-        if (d5 == 3) s += 3
-        return s
-    }
+    fun fours(vararg dices: Int): Int = dices.countNumberOccurrence(4)
 
-    fun fours(vararg dices: Int): Int {
-        var sum: Int = 0
-        for (at in 0..4) {
-            if (dices[at] == 4) {
-                sum += 4
-            }
-        }
-        return sum
-    }
+    fun fives(vararg dices: Int): Int = dices.countNumberOccurrence(5)
 
-    fun fives(vararg dice: Int): Int {
-        var s = 0
-        var i: Int = 0
-        while (i < dice.size) {
-            if (dice[i] == 5)
-                s = s + 5
-            i++
-        }
-        return s
-    }
+    fun sixes(vararg dices: Int): Int = dices.countNumberOccurrence(6)
 
-    fun sixes(vararg dices: Int): Int {
-        var sum = 0
-        for (at in dices.indices)
-            if (dices[at] == 6)
-                sum = sum + 6
-        return sum
-    }
+    private fun IntArray.countNumberOccurrence(number: Int): Int = filter { it == number }.sum()
 
     fun onePair(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
