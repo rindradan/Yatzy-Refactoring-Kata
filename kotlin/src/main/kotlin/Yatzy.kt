@@ -7,36 +7,36 @@ class Yatzy {
         return if (tallies.hasYatzy()) 50 else 0
     }
 
-    fun ones(vararg dices: Int): Int = dices.countNumberOccurrence(1)
+    fun ones(vararg dices: Int): Int = dices.countNumberOccurrences(1)
 
-    fun twos(vararg dices: Int): Int = dices.countNumberOccurrence(2)
+    fun twos(vararg dices: Int): Int = dices.countNumberOccurrences(2)
 
-    fun threes(vararg dices: Int): Int = dices.countNumberOccurrence(3)
+    fun threes(vararg dices: Int): Int = dices.countNumberOccurrences(3)
 
-    fun fours(vararg dices: Int): Int = dices.countNumberOccurrence(4)
+    fun fours(vararg dices: Int): Int = dices.countNumberOccurrences(4)
 
-    fun fives(vararg dices: Int): Int = dices.countNumberOccurrence(5)
+    fun fives(vararg dices: Int): Int = dices.countNumberOccurrences(5)
 
-    fun sixes(vararg dices: Int): Int = dices.countNumberOccurrence(6)
+    fun sixes(vararg dices: Int): Int = dices.countNumberOccurrences(6)
 
     fun onePair(vararg dices: Int): Int {
         val tallies = dices.getTalliesByDice()
-        return tallies.countSameNumber(2)
+        return tallies.getMaxNumberByOccurrences(2)
     }
 
     fun twoPairs(vararg dices: Int): Int {
         val tallies = dices.getTalliesByDice()
-        return tallies.filter { it.value >= 2 }.takeIf { it.count() >= 2 }?.keys?.sumOf { it * 2 } ?: 0
+        return tallies.getSumNumberByOccurrences(2, 2)
     }
 
     fun threeOfAKind(vararg dices: Int): Int {
         val tallies = dices.getTalliesByDice()
-        return tallies.countSameNumber(3)
+        return tallies.getMaxNumberByOccurrences(3)
     }
 
     fun fourOfAKind(vararg dices: Int): Int {
         val tallies = dices.getTalliesByDice()
-        return tallies.countSameNumber(4)
+        return tallies.getMaxNumberByOccurrences(4)
     }
 
     fun smallStraight(vararg dices: Int): Int {
@@ -54,10 +54,16 @@ class Yatzy {
         return if (tallies.isFullHouse()) dices.sum() else 0
     }
 
-    private fun IntArray.countNumberOccurrence(number: Int): Int = filter { it == number }.sum()
+    private fun IntArray.countNumberOccurrences(number: Int): Int = filter { it == number }.sum()
 
-    private fun Map<Int, Int>.countSameNumber(number: Int) =
-        filter { it.value >= number }.keys.maxOfOrNull { it * number } ?: 0
+    private fun Map<Int, Int>.getMaxNumberByOccurrences(number: Int, occurrence: Int = 1): Int =
+        getNumberByOccurrences(number, occurrence)?.maxOrNull() ?: 0
+
+    private fun Map<Int, Int>.getSumNumberByOccurrences(number: Int, occurrence: Int = 1): Int =
+        getNumberByOccurrences(number, occurrence)?.sum() ?: 0
+
+    private fun Map<Int, Int>.getNumberByOccurrences(number: Int, occurrence: Int = 1): List<Int>? =
+        filter { it.value >= number }.takeIf { it.count() >= occurrence }?.keys?.map { it * number }
 
     private fun IntArray.getTalliesByDice(): Map<Int, Int> {
         val tallies = HashMap<Int, Int>(6)
