@@ -1,14 +1,6 @@
 class Yatzy {
 
-    fun chance(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-        var total = 0
-        total += d1
-        total += d2
-        total += d3
-        total += d4
-        total += d5
-        return total
-    }
+    fun chance(vararg dices: Int): Int = dices.sum()
 
     fun yatzy(vararg dices: Int): Int {
         val tallies = getTalliesByDice(dices)
