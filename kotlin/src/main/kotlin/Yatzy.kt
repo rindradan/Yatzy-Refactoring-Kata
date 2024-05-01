@@ -11,13 +11,8 @@ class Yatzy {
     }
 
     fun yatzy(vararg dices: Int): Int {
-        val counts = IntArray(6)
-        for (die in dices)
-            counts[die - 1]++
-        for (i in 0..5)
-            if (counts[i] == 5)
-                return 50
-        return 0
+        val tallies = getTalliesByDice(dices)
+        return if (hasYatzy(tallies)) 50 else 0
     }
 
     fun ones(vararg dices: Int): Int = dices.countNumberOccurrence(1)
@@ -90,4 +85,5 @@ class Yatzy {
 
     private fun hasLargeStraight(tallies: Map<Int, Int>): Boolean =
         tallies.filterKeys { it in 1..5 }.all { it.value == 1 }
+    private fun hasYatzy(tallies: Map<Int, Int>): Boolean = tallies.any { it.value == 5 }
 }
